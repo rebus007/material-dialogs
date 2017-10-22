@@ -10,7 +10,10 @@ import com.afollestad.materialdialogs.MaterialDialog;
 /** @author Aidan Follestad (afollestad) */
 public class AboutDialog extends DialogFragment {
 
-  public static void show(AppCompatActivity context) {
+  private static boolean bottomDialog;
+
+  public static void show(AppCompatActivity context, boolean bottom) {
+    bottomDialog = bottom;
     AboutDialog dialog = new AboutDialog();
     dialog.show(context.getSupportFragmentManager(), "[ABOUT_DIALOG]");
   }
@@ -19,6 +22,7 @@ public class AboutDialog extends DialogFragment {
   @Override
   public Dialog onCreateDialog(Bundle savedInstanceState) {
     return new MaterialDialog.Builder(getActivity())
+        .bottom(bottomDialog)
         .title(R.string.about)
         .positiveText(R.string.dismiss)
         .content(R.string.about_body, true)

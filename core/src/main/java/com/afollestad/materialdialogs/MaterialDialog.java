@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
@@ -31,7 +30,6 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -1079,7 +1077,7 @@ public class MaterialDialog extends DialogBase
   public static class Builder {
 
     protected final Context context;
-    protected final boolean bottom;
+    protected boolean bottom;
     protected CharSequence title;
     protected GravityEnum titleGravity = GravityEnum.START;
     protected GravityEnum contentGravity = GravityEnum.START;
@@ -1179,12 +1177,7 @@ public class MaterialDialog extends DialogBase
     protected Object tag;
 
     public Builder(@NonNull Context context) {
-      this(context, false);
-    }
-
-    public Builder(@NonNull Context context, boolean bottom) {
       this.context = context;
-      this.bottom = bottom;
       final int materialBlue = DialogUtils.getColor(context, R.color.md_material_blue_600);
 
       // Retrieve default accent colors, which are used on the action buttons and progress bars
@@ -1339,6 +1332,11 @@ public class MaterialDialog extends DialogBase
       this.btnStackedGravity = s.btnStackedGravity;
       this.itemsGravity = s.itemsGravity;
       this.buttonsGravity = s.buttonsGravity;
+    }
+
+    public Builder bottom(boolean bottom) {
+      this.bottom = bottom;
+      return this;
     }
 
     public Builder title(@StringRes int titleRes) {
