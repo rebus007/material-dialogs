@@ -1037,12 +1037,8 @@ public class MaterialDialog extends DialogBase
   @SuppressWarnings({"WeakerAccess", "unused", "SameParameterValue", "ConstantConditions"})
   public static class Builder {
 
-<<<<<<< HEAD
-    protected final Context context;
     protected boolean bottom;
-=======
     protected Context context;
->>>>>>> pr/1
     protected CharSequence title;
     protected GravityEnum titleGravity = GravityEnum.START;
     protected GravityEnum contentGravity = GravityEnum.START;
