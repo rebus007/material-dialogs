@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
 import android.support.annotation.UiThread;
 import android.support.v4.content.ContextCompat;
@@ -43,7 +42,7 @@ import me.zhanghai.android.materialprogressbar.IndeterminateHorizontalProgressDr
 class DialogInit {
 
   @StyleRes
-  static int getTheme(@NonNull MaterialDialog.Builder builder) {
+  static int getTheme(MaterialDialog.Builder builder) {
     boolean darkTheme =
         DialogUtils.resolveBoolean(
             builder.context, R.attr.md_dark_theme, builder.theme == Theme.DARK);
@@ -81,7 +80,7 @@ class DialogInit {
 
   @SuppressWarnings("ConstantConditions")
   @UiThread
-  public static void init(final MaterialDialog dialog) {
+  static void init(final MaterialDialog dialog) {
     final MaterialDialog.Builder builder = dialog.builder;
 
     // Set cancelable flag and dialog background color
@@ -90,7 +89,7 @@ class DialogInit {
     if (builder.backgroundColor == 0) {
       builder.backgroundColor =
           DialogUtils.resolveColor(
-              builder.context,
+              dialog.getView().getContext(),
               R.attr.md_background_color,
               DialogUtils.resolveColor(dialog.getContext(), R.attr.colorBackgroundFloating));
     }
@@ -299,7 +298,6 @@ class DialogInit {
         dialog.getButtonSelector(DialogAction.POSITIVE, false));
     dialog.positiveButton.setTag(DialogAction.POSITIVE);
     dialog.positiveButton.setOnClickListener(dialog);
-    dialog.positiveButton.setVisibility(View.VISIBLE);
 
     MDButton negativeTextView = dialog.negativeButton;
     dialog.setTypeface(negativeTextView, builder.mediumFont);
@@ -311,7 +309,6 @@ class DialogInit {
         dialog.getButtonSelector(DialogAction.NEGATIVE, false));
     dialog.negativeButton.setTag(DialogAction.NEGATIVE);
     dialog.negativeButton.setOnClickListener(dialog);
-    dialog.negativeButton.setVisibility(View.VISIBLE);
 
     MDButton neutralTextView = dialog.neutralButton;
     dialog.setTypeface(neutralTextView, builder.mediumFont);
@@ -322,7 +319,6 @@ class DialogInit {
     dialog.neutralButton.setDefaultSelector(dialog.getButtonSelector(DialogAction.NEUTRAL, false));
     dialog.neutralButton.setTag(DialogAction.NEUTRAL);
     dialog.neutralButton.setOnClickListener(dialog);
-    dialog.neutralButton.setVisibility(View.VISIBLE);
 
     // Setup list dialog stuff
     if (builder.listCallbackMultiChoice != null) {
@@ -378,7 +374,8 @@ class DialogInit {
           // Setting padding to an EditText causes visual errors, set it to the parent instead
           sv.setPadding(framePadding, paddingTop, framePadding, paddingBottom);
         } else {
-          // Setting padding to scroll view pushes the scroll bars out, don't do it if not necessary (like above)
+          // Setting padding to scroll view pushes the scroll bars out, don't do it if not necessary
+          // (like above)
           sv.setPadding(0, paddingTop, 0, paddingBottom);
           innerView.setPadding(framePadding, 0, framePadding, 0);
         }
@@ -551,7 +548,8 @@ class DialogInit {
       if (builder.inputType != InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
           && (builder.inputType & InputType.TYPE_TEXT_VARIATION_PASSWORD)
               == InputType.TYPE_TEXT_VARIATION_PASSWORD) {
-        // If the flags contain TYPE_TEXT_VARIATION_PASSWORD, apply the password transformation method automatically
+        // If the flags contain TYPE_TEXT_VARIATION_PASSWORD, apply the password transformation
+        // method automatically
         dialog.input.setTransformationMethod(PasswordTransformationMethod.getInstance());
       }
     }
@@ -563,6 +561,10 @@ class DialogInit {
     } else {
       dialog.inputMinMax.setVisibility(View.GONE);
       dialog.inputMinMax = null;
+    }
+
+    if (builder.inputFilters != null) {
+      dialog.input.setFilters(builder.inputFilters);
     }
   }
 }
